@@ -672,6 +672,48 @@ HTTPSEverywhere.prototype = {
       .open(uri,'', args );
   },
 
+  isStrictModeEnabled: function() {
+    var o_prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService);
+
+    return o_prefs.getIntPref("network.proxy.type") == 1 // manual
+          && o_prefs.getCharPref("network.proxy.http") == "localhost"
+          && o_prefs.getIntPref("network.proxy.http_port") == 4;
+  },
+
+  toggleStrictMode: function() {
+    var o_prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                        .getService(Components.interfaces.nsIPrefService);
+
+    if (isStrictModeEnabled()) {
+      // turn it off, restoring original proxy configuration
+      var origProxyType = o_prefs.getIntPref("extensions.https_everywhere.origproxy.type");
+      var origProxyHttp = o_prefs.getCharPref("extensions.https_everywhere.origproxy.http");
+      var origProxyHttpPort = o_prefs.getIntPref("extensions.https_everywhere.origproxy.http_port");
+
+      o_prefs.setIntPref("network.proxy.type", origProxyType);
+      o_prefs.setCharPref("network.proxy.http", origProxyHttp);
+      o_prefs.setIntPref("network.proxy.http_port", origProxyHttpPort);
+    } else {
+      // turn it on, remembering proxy config and switching to bogus proxy
+      var origProxyType = o_prefs.getIntPref("network.proxy.type");
+      var origProxyHttp = o_prefs.getCharPref("network.proxy.http");
+      var origProxyHttpPort = o_prefs.getIntPref("network.proxy.http_port");
+
+      o_prefs.setIntPref("extensions.https_everywhere.origproxy.type", origProxyType);
+      o_prefs.setCharPref("extensions.https_everywhere.origproxy.http", origProxyHttp);
+      o_prefs.setIntPref("extensions.https_everywhere.origproxy.http_port", origProxyHttpPort);
+
+      o_prefs.setIntPref("network.proxy.type", 1); // manual
+      o_prefs.setCharPref("network.proxy.http", "localhost");
+      o_prefs.setIntPref("network.proxy.http_port", 4);
+
+      if (o_prefs.getBoolPref("network.proxy.share_proxy_settings")) {
+          o_prefs.setBoolPref("network.proxy.share_proxy_settings", false);
+      }
+    }
+  },
+
   toggleEnabledState: function() {
     if(this.prefs.getBoolPref("globalEnabled")){    
         try{    

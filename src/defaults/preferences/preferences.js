@@ -1,6 +1,11 @@
 pref("extensions.https_everywhere.LogLevel", 5);
 pref("extensions.https_everywhere.globalEnabled",true);
 
+// original proxy settings (restored when strict mode is turned off)
+pref("extensions.https_everywhere.origproxy.type", 0);
+pref("extensions.https_everywhere.origproxy.http", '');
+pref("extensions.https_everywhere.origproxy.http_port", 0);
+
 // this is the HTTPS Everywhere preferences version (for migrations)
 pref("extensions.https_everywhere.prefs_version", 0);
 
