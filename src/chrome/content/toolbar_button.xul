@@ -14,16 +14,27 @@
       src="chrome://https-everywhere/locale/https-everywhere.properties" />
     </stringbundleset>
 
-  <!-- this works in Firefox, we need a Seamonkey version too... -->
-  <menupopup id="menu_ToolsPopup" onpopupshowing="stitch_context_menu()">
+  <!-- Tools submenu for Firefox -->
+  <menupopup id="menu_ToolsPopup">
     <menu id="https-everywhere-menu" label="&https-everywhere.about.ext_name;"> 
-      <!-- "https-everywhere-context" below gets .cloneNode()ed in here -->
+      <menupopup id="https-everywhere-menu-popup" onpopupshowing="show_applicable_list(this)">
+        <!-- entries will be written here by ApplicableList.populate_menu() -->
+        <menuseparator />
+        <menuitem label="&https-everywhere.menu.observatory;" command="https-everywhere-menuitem-observatory" />
+        <menuitem label="&https-everywhere.menu.about;" command="https-everywhere-menuitem-about" />
+      </menupopup>
     </menu>
   </menupopup>
 
-  <menupopup id="toolsPopup" onpopupshowing="stitch_context_menu2()">
+  <!-- Tools submenu for Seamonkey -->
+  <menupopup id="toolsPopup">
     <menu id="https-everywhere-menu2" label="&https-everywhere.about.ext_name;">
-      <!-- "https-everywhere-context" below gets .cloneNode()ed in here -->
+      <menupopup id="https-everywhere-menu2-popup" onpopupshowing="show_applicable_list(this)">
+        <!-- entries will be written here by ApplicableList.populate_menu() -->
+        <menuseparator />
+        <menuitem label="&https-everywhere.menu.observatory;" command="https-everywhere-menuitem-observatory" />
+        <menuitem label="&https-everywhere.menu.about;" command="https-everywhere-menuitem-about" />
+      </menupopup>
     </menu>
   </menupopup>
   
