@@ -673,43 +673,43 @@ HTTPSEverywhere.prototype = {
   },
 
   isStrictModeEnabled: function() {
-    var o_prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService);
+    var rootBranch = CC["@mozilla.org/preferences-service;1"]
+                       .getService(Components.interfaces.nsIPrefBranch);
 
-    return o_prefs.getIntPref("network.proxy.type") == 1 // manual
-          && o_prefs.getCharPref("network.proxy.http") == "localhost"
-          && o_prefs.getIntPref("network.proxy.http_port") == 4;
+    return rootBranch.getIntPref("network.proxy.type") == 1 // manual
+          && rootBranch.getCharPref("network.proxy.http") == "localhost"
+          && rootBranch.getIntPref("network.proxy.http_port") == 4;
   },
 
   toggleStrictMode: function() {
-    var o_prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                        .getService(Components.interfaces.nsIPrefService);
+    var rootBranch = CC["@mozilla.org/preferences-service;1"]
+                       .getService(Components.interfaces.nsIPrefBranch);
 
-    if (isStrictModeEnabled()) {
+    if (this.isStrictModeEnabled()) {
       // turn it off, restoring original proxy configuration
-      var origProxyType = o_prefs.getIntPref("extensions.https_everywhere.origproxy.type");
-      var origProxyHttp = o_prefs.getCharPref("extensions.https_everywhere.origproxy.http");
-      var origProxyHttpPort = o_prefs.getIntPref("extensions.https_everywhere.origproxy.http_port");
+      var origProxyType = rootBranch.getIntPref("extensions.https_everywhere.origproxy.type");
+      var origProxyHttp = rootBranch.getCharPref("extensions.https_everywhere.origproxy.http");
+      var origProxyHttpPort = rootBranch.getIntPref("extensions.https_everywhere.origproxy.http_port");
 
-      o_prefs.setIntPref("network.proxy.type", origProxyType);
-      o_prefs.setCharPref("network.proxy.http", origProxyHttp);
-      o_prefs.setIntPref("network.proxy.http_port", origProxyHttpPort);
+      rootBranch.setIntPref("network.proxy.type", origProxyType);
+      rootBranch.setCharPref("network.proxy.http", origProxyHttp);
+      rootBranch.setIntPref("network.proxy.http_port", origProxyHttpPort);
     } else {
       // turn it on, remembering proxy config and switching to bogus proxy
-      var origProxyType = o_prefs.getIntPref("network.proxy.type");
-      var origProxyHttp = o_prefs.getCharPref("network.proxy.http");
-      var origProxyHttpPort = o_prefs.getIntPref("network.proxy.http_port");
+      var origProxyType = rootBranch.getIntPref("network.proxy.type");
+      var origProxyHttp = rootBranch.getCharPref("network.proxy.http");
+      var origProxyHttpPort = rootBranch.getIntPref("network.proxy.http_port");
 
-      o_prefs.setIntPref("extensions.https_everywhere.origproxy.type", origProxyType);
-      o_prefs.setCharPref("extensions.https_everywhere.origproxy.http", origProxyHttp);
-      o_prefs.setIntPref("extensions.https_everywhere.origproxy.http_port", origProxyHttpPort);
+      rootBranch.setIntPref("extensions.https_everywhere.origproxy.type", origProxyType);
+      rootBranch.setCharPref("extensions.https_everywhere.origproxy.http", origProxyHttp);
+      rootBranch.setIntPref("extensions.https_everywhere.origproxy.http_port", origProxyHttpPort);
 
-      o_prefs.setIntPref("network.proxy.type", 1); // manual
-      o_prefs.setCharPref("network.proxy.http", "localhost");
-      o_prefs.setIntPref("network.proxy.http_port", 4);
+      rootBranch.setIntPref("network.proxy.type", 1); // manual
+      rootBranch.setCharPref("network.proxy.http", "localhost");
+      rootBranch.setIntPref("network.proxy.http_port", 4);
 
-      if (o_prefs.getBoolPref("network.proxy.share_proxy_settings")) {
-          o_prefs.setBoolPref("network.proxy.share_proxy_settings", false);
+      if (rootBranch.getBoolPref("network.proxy.share_proxy_settings")) {
+          rootBranch.setBoolPref("network.proxy.share_proxy_settings", false);
       }
     }
   },

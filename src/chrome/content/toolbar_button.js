@@ -116,7 +116,11 @@ httpsEverywhere.toolbarButton = {
 
     var toolbarbutton = document.getElementById('https-everywhere-button');
     if (enabled) {
-      toolbarbutton.setAttribute('status', 'enabled');
+      if (HTTPSEverywhere.isStrictModeEnabled()) {
+        toolbarbutton.setAttribute('status', 'strict');
+      } else {
+        toolbarbutton.setAttribute('status', 'enabled');
+      }
     } else {
       toolbarbutton.setAttribute('status', 'disabled');
     }
@@ -248,6 +252,14 @@ function reload_window() {
   // This choice of flags comes from NoScript's quickReload function; not sure
   // if it's optimal
   webNav.reload(webNav.LOAD_FLAGS_CHARSET_CHANGE);  
+}
+
+function toggleStrictMode(){
+	HTTPSEverywhere.toggleStrictMode();
+	reload_window();
+
+    // Change icon depending on enabled state
+    httpsEverywhere.toolbarButton.changeIcon();
 }
 
 function toggleEnabledState(){

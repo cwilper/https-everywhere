@@ -49,6 +49,8 @@
     </toolbarbutton>
   </toolbarpalette>
   <commandset>
+    <command id="https-everywhere-menuitem-strictModeToggle"
+      oncommand="toggleStrictMode();" />
     <command id="https-everywhere-menuitem-globalEnableToggle"
       oncommand="toggleEnabledState();" />
     <command id="https-everywhere-menuitem-preferences"

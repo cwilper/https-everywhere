@@ -22,6 +22,14 @@ toolbar[iconsize="small"] #https-everywhere-button[status="disabled"] > .https-e
   list-style-image: url("chrome://https-everywhere/skin/https-everywhere-16-gray.png");
 }
 
+#https-everywhere-button[status="strict"] > .https-everywhere-button {
+  list-style-image: url("chrome://https-everywhere/skin/https-everywhere-24-red.png");
+}
+
+toolbar[iconsize="small"] #https-everywhere-button[status="strict"] > .https-everywhere-button {
+  list-style-image: url("chrome://https-everywhere/skin/https-everywhere-16-red.png");
+}
+
 /* ruleset counter */
 #rscounter {
   margin: 3px -12px 0 -8px; 

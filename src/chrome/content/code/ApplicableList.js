@@ -104,7 +104,17 @@ ApplicableList.prototype = {
     enableLabel.setAttribute('label', text);
     enableLabel.setAttribute('command', 'https-everywhere-menuitem-globalEnableToggle');    
     this.prepend_child(enableLabel);
-    
+
+    // add strict mode enable/disable toggle button
+    var strictLabel = document.createElement('menuitem');
+    var strictText = strings.getString("https-everywhere.menu.strictDisable");
+    if (!https_everywhere.isStrictModeEnabled()) {
+      strictText = strings.getString("https-everywhere.menu.strictEnable");
+    }
+    strictLabel.setAttribute('label', strictText);
+    strictLabel.setAttribute('command', 'https-everywhere-menuitem-strictModeToggle');
+    this.prepend_child(strictLabel);
+
     // add the label at the top
     var any_rules = false
     for(var x in this.all) {
